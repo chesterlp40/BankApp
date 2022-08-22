@@ -53,9 +53,10 @@ class TransferFundsViewModel: ObservableObject {
         if !isValid() {
             return
         }
-        guard let fromAccount = fromAccount,
-              let toAccount = toAccount,
-              let amount = Double(amount)
+        guard
+            let fromAccount = fromAccount,
+            let toAccount = toAccount,
+            let amount = Double(amount)
         else {
             return
         }

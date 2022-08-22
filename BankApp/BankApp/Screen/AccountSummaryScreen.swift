@@ -40,7 +40,7 @@ struct AccountSummaryScreen: View {
             self.accountSummaryVM.getAllAccounts()
         }) {
             if self.activeSheet == .transferFunds {
-                // TransferFundsScreen()
+                TransferFundsScreen()
             } else if self.activeSheet == .addAccount {
                 AddAccountScreen()
             }
