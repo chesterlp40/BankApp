@@ -8,7 +8,6 @@
 import Foundation
 
 class AccountSummaryViewModel: ObservableObject {
-    
     private var accountModels = [Account]()
     
     @Published var accounts: [AccountViewModel] = [AccountViewModel]()
@@ -20,16 +19,18 @@ class AccountSummaryViewModel: ObservableObject {
     func getAllAccounts() {
         AccountService.shared.getAllAccounts { result in
             switch result {
-                case .success(let accounts):
-                    if let accounts = accounts {
-                        self.accountModels = accounts
-                        DispatchQueue.main.async {
-                            self.accounts = accounts.map(AccountViewModel.init)
-                        }
+            case .success(let accounts):
+                if let accounts = accounts {
+                    self.accountModels = accounts
+                    DispatchQueue.main.async {
+                        self.accounts = accounts.map(
+                            AccountViewModel.init
+                        )
                     }
-                   
-                case .failure(let error):
-                    print(error.localizedDescription)
+                }
+                
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

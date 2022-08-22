@@ -21,7 +21,7 @@ class AccountService {
     
     func getAllAccounts(
         completion: @escaping (Result<[Account]?,NetworkError>
-    ) -> Void) {
+        ) -> Void) {
         guard let url = URL.urlForAccounts() else {
             return completion(.failure(.badUrl))
         }
@@ -64,12 +64,12 @@ class AccountService {
             guard let data = data, error == nil else {
                 return completion(.failure(.noData))
             }
-            let createAccountResponse = try? JSONDecoder().decode(
+            let createAccountResponseData = try? JSONDecoder().decode(
                 CreateAccountResponse.self,
                 from: data
             )
             
-            if let createAccountResponse = createAccountResponse {
+            if let createAccountResponse = createAccountResponseData {
                 completion(.success(createAccountResponse))
             } else {
                 completion(.failure(.decodingError))
@@ -77,4 +77,39 @@ class AccountService {
         }.resume()
     }
     
+    func transferFunds(
+        transferFundRequest: TransferFundRequest,
+        completion: @escaping (Result<TransferFundResponse,NetworkError>) -> Void
+    ) {
+        guard let url = URL.urlForTransferFunds() else {
+            return completion(.failure(.badUrl))
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue(
+            "application/json",
+            forHTTPHeaderField: "Content-Type"
+        )
+        request.httpBody = try? JSONEncoder().encode(
+            transferFundRequest
+        )
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                return completion(.failure(.noData))
+            }
+            
+            let transferFundResponseData = try? JSONDecoder().decode(
+                TransferFundResponse.self,
+                from: data
+            )
+            
+            if let transferFundResponse = transferFundResponseData {
+                completion(.success(transferFundResponse))
+            } else {
+                completion(.failure(.decodingError))
+            }
+        }.resume()
+    }
 }

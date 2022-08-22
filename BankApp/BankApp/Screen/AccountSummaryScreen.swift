@@ -42,7 +42,7 @@ struct AccountSummaryScreen: View {
             if self.activeSheet == .transferFunds {
                 // TransferFundsScreen()
             } else if self.activeSheet == .addAccount {
-                // AddAccountScreen()
+                AddAccountScreen()
             }
         }
         .navigationBarItems(trailing: Button("Add Account") {
@@ -50,7 +50,7 @@ struct AccountSummaryScreen: View {
             self.isPresented = true
         })
         .navigationBarTitle("Account Summary")
-            .embedInNavigationView()
+        .embedInNavigationView()
     }
 }
 
